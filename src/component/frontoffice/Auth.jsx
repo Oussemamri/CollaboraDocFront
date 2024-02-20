@@ -9,7 +9,9 @@ const SignInSignUp = () => {
   };
 
   return (
-    <div
+
+    <div className="body">
+      <div
       className={`wrapper ${isSignUp ? "animated-signup" : "animated-signin"}`}
     >
       <div className="form-container sign-up">
@@ -84,6 +86,8 @@ const SignInSignUp = () => {
         </form>
       </div>
     </div>
+    </div>
+    
   );
 };
 
