@@ -1,18 +1,22 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import Auth from './component/frontoffice/Auth'
-import '@fortawesome/fontawesome-free/css/all.min.css';
-
+import Dashboard from "./component/backoffice/Dashboard";
+import Homescreen from "./component/backoffice/Homescreen";
+import Auth from "./component/frontoffice/Auth";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
-
   return (
     <>
-      <Auth/>
+      <BrowserRouter>
+        <Routes>
+          <Route path="" element={<Dashboard />} />
+
+          <Route path="/aaa" element={<Auth />} />
+          <Route path="/aa" element={<Homescreen />} />
+        </Routes>
+      </BrowserRouter>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
