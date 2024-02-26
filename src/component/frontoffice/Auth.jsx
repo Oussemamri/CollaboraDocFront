@@ -9,84 +9,75 @@ const SignInSignUp = () => {
   };
 
   return (
-
     <div className="body">
-      <div
-      className={`wrapper ${isSignUp ? "animated-signup" : "animated-signin"}`}
-    >
-      <div className="form-container sign-up">
-        <form action="#" noValidate>
-          {" "}
-          {/* Add noValidate here */}
-          <h2>sign up</h2>
-          <div className="form-group">
-            <input type="text" required />
-            <i className="fas fa-user"></i>
-            <label htmlFor="">username</label>
-          </div>
-          <div className="form-group">
-            <input type="email" required />
-            <i className="fas fa-at"></i>
-            <label htmlFor="">email</label>
-          </div>
-          <div className="form-group">
-            <input type="password" required />
-            <i className="fas fa-lock"></i>
-            <label htmlFor="">password</label>
-          </div>
-          <div className="form-group">
-            <input type="password" required />
-            <i className="fas fa-lock"></i>
-            <label htmlFor="">confirm password</label>
-          </div>
-          <button type="submit" className="btn">
-            sign up
-          </button>
-          <div className="link">
-            <p>
-              You already have an account?
-              <button className="signin-link" onClick={toggleForm}>
-                {" "}
-                sign in
-              </button>
-            </p>
-          </div>
-        </form>
+  <div className="cont">
+    <input type="checkbox" id="flip" />
+    <div className="cover">
+      <div className="front">
+        <img src="/public/Documents (1).gif" alt="" />
+        <div className="text">
+          <span className="text-1">Every new friend is a <br /> new adventure</span>
+          <span className="text-2">Let's get connected</span>
+        </div>
       </div>
-      <div className="form-container sign-in">
-        <form action="#" noValidate>
-          {" "}
-          {/* Add noValidate here */}
-          <h2>login</h2>
-          <div className="form-group">
-            <input type="text" required />
-            <i className="fas fa-user"></i>
-            <label htmlFor="">username</label>
-          </div>
-          <div className="form-group">
-            <input type="password" required />
-            <i className="fas fa-lock"></i>
-            <label htmlFor="">password</label>
-          </div>
-          <div className="forgot-pass">
-            <button onClick={toggleForm}>forgot password?</button>
-          </div>
-          <button type="submit" className="btn">
-            login
-          </button>
-          <div className="link">
-            <p>
-              Don t have an account?
-              <button className="signup-link" onClick={toggleForm}>
-                {" "}
-                sign up
-              </button>
-            </p>
-          </div>
-        </form>
+      <div className="back">
+        <img className="backImg" src="/public/assets_front/image/asset 11.jpeg" alt="" />
+        <div className="text">
+          <span className="text-1">Complete miles of journey <br /> with one step</span>
+          <span className="text-2">Let's get started</span>
+        </div>
       </div>
     </div>
+    <div className="forms">
+      <div className="form-content">
+        <div className="login-form">
+          <div className="title">Login</div>
+          <form action="#">
+            <div className="input-boxes">
+              <div className="input-box">
+                <i className="fas fa-envelope"></i>
+                <input type="text" placeholder="Enter your email" required />
+              </div>
+              <div className="input-box">
+                <i className="fas fa-lock"></i>
+                <input type="password" placeholder="Enter your password" required />
+              </div>
+              <div className="text"><a href="#">Forgot password?</a></div>
+              <div className="button input-box">
+                <input type="submit" value="Submit" />
+              </div>
+              <div className="text sign-up-text">Don't have an account? <label htmlFor="flip">Signup now</label></div>
+            </div>
+          </form>
+        </div>
+        <div className="signup-form">
+          <div className="title">Signup</div>
+          <form action="#">
+            <div className="input-boxes">
+              <div className="input-box">
+                <i className="fas fa-user"></i>
+                <input type="text" placeholder="Enter your name" required />
+              </div>
+              <div className="input-box">
+                <i className="fas fa-envelope"></i>
+                <input type="text" placeholder="Enter your email" required />
+              </div>
+              <div className="input-box">
+                <i className="fas fa-lock"></i>
+                <input type="password" placeholder="Enter your password" required />
+              </div>
+              <div className="button input-box">
+                <input type="submit" value="Submit" />
+              </div>
+              <div className="text sign-up-text">Already have an account? <label htmlFor="flip">Login now</label></div>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
+  </div>
+    </div>
+  
     
   );
 };
