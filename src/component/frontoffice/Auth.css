@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 * {
     margin: 0;
@@ -40,7 +40,7 @@ html {
     }
 }
 
-.wrapper .form-container {
+.wrapper .form-cont {
     position: absolute;
     top: 0;
     left: 0;
@@ -54,21 +54,21 @@ html {
     box-shadow: 0 0 1rem 0 rgba(0 0 0 / .2);
 }
 
-.wrapper .form-container form h2 {
+.wrapper .form-cont form h2 {
     font-size: 3rem;
     text-align: center;
     text-transform: capitalize;
     color: var(--titleColor);
 }
 
-.wrapper .form-container form .form-group {
+.wrapper .form-cont form .form-group {
     position: relative;
     width: 32rem;
     margin: 3rem 0;
 }
 
-.wrapper .form-container form .form-group i,
-.wrapper .form-container form .form-group label {
+.wrapper .form-cont form .form-group i,
+.wrapper .form-cont form .form-group label {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -80,15 +80,15 @@ html {
     transition: all .5s ease;
 }
 
-.wrapper .form-container form .form-group i {
+.wrapper .form-cont form .form-group i {
     left: .5rem;
 }
 
-.wrapper .form-container form .form-group label {
+.wrapper .form-cont form .form-group label {
     left: 2.5rem;
 }
 
-.wrapper .form-container form .form-group input {
+.wrapper .form-cont form .form-group input {
     width: 100%;
     height: 4rem;
     padding: 0 1rem;
@@ -110,11 +110,11 @@ form .form-group input:valid~i {
     background-color: var(--whiteColor);
 }
 
-.wrapper .form-container form .forgot-pass {
+.wrapper .form-cont form .forgot-pass {
     margin: -1.5rem 0 1.5rem;
 }
 
-.wrapper .form-container form .forgot-pass a {
+.wrapper .form-cont form .forgot-pass a {
     color: var(--labelColor);
     text-decoration: none;
     font-size: 1.4rem;
@@ -122,11 +122,11 @@ form .form-group input:valid~i {
     transform: all .5s ease;
 }
 
-.wrapper .form-container form .forgot-pass a:hover {
+.wrapper .form-cont form .forgot-pass a:hover {
     color: var(--mainColor);
 }
 
-.wrapper .form-container form .btn {
+.wrapper .form-cont form .btn {
     background: linear-gradient(to right, #da4453, var(--mainColor));
     color: var(--whiteColor);
     text-transform: capitalize;
@@ -157,14 +157,14 @@ form .form-group input:valid~i {
     box-shadow: 0 .2rem 1rem rgba(0 0 0 / .4);
 }
 
-.wrapper .form-container form .link {
+.wrapper .form-cont form .link {
     text-align: center;
     font-size: 1.4rem;
     color: var(--labelColor);
     margin: 2.5rem 0;
 }
 
-.wrapper .form-container form .link a {
+.wrapper .form-cont form .link a {
     text-transform: capitalize;
     color: var(--mainColor);
     text-decoration: none;
@@ -172,7 +172,7 @@ form .form-group input:valid~i {
     transition: all .5s ease;
 }
 
-.wrapper .form-container form .link a:hover {
+.wrapper .form-cont form .link a:hover {
     color: #da4453;
 }
 
@@ -180,7 +180,7 @@ form .form-group input:valid~i {
     transform: rotate(7deg);
 }
 
-.wrapper.animated-signin .form-container.sign-in {
+.wrapper.animated-signin .form-cont.sign-in {
     animation: signin-flip 1s ease-in-out forwards;
 }
 
@@ -198,7 +198,7 @@ form .form-group input:valid~i {
     }
 }
 
-.wrapper.animated-signin .form-container.sign-up {
+.wrapper.animated-signin .form-cont.sign-up {
     animation: rotatecard .7s ease-in-out forwards;
 }
 
@@ -213,7 +213,7 @@ form .form-group input:valid~i {
     }
 }
 
-.wrapper.animated-signup .form-container.sign-up {
+.wrapper.animated-signup .form-cont.sign-up {
     animation: signup-flip 1s ease-in-out forwards;
 }
 
@@ -232,7 +232,7 @@ form .form-group input:valid~i {
     }
 }
 
-.wrapper.wrapper.animated-signup .form-container.sign-in {
+.wrapper.wrapper.animated-signup .form-cont.sign-in {
     transform: rotate(7deg);
     animation: rotatecard .7s ease-in-out forwards;
     animation-delay: .3s;
@@ -247,4 +247,221 @@ form .form-group input:valid~i {
         transform: rotate(0);
         z-index: 1;
     }
+} */
+
+/* Google Font Link */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins" , sans-serif;
+}
+.body{
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #7d2ae8;
+  padding: 30px;
+}
+.cont{
+  position: relative;
+  max-width: 850px;
+  width: 100%;
+  background: #fff;
+  padding: 40px 30px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+  perspective: 2700px;
+}
+.cont .cover{
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 100%;
+  width: 50%;
+  z-index: 98;
+  transition: all 1s ease;
+  transform-origin: left;
+  transform-style: preserve-3d;
+}
+.cont #flip:checked ~ .cover{
+  transform: rotateY(-180deg);
+}
+ .cont .cover .front,
+ .cont .cover .back{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+.cover .back{
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+}
+.cont .cover::before,
+.cont .cover::after{
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: #7d2ae8;
+  opacity: 0.5;
+  z-index: 12;
+}
+.cont .cover::after{
+  opacity: 0.3;
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+}
+.cont .cover img{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  z-index: 10;
+}
+.cont .cover .text{
+  position: absolute;
+  z-index: 130;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.cover .text .text-1,
+.cover .text .text-2{
+  font-size: 26px;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+}
+.cover .text .text-2{
+  font-size: 15px;
+  font-weight: 500;
+}
+.cont .forms{
+  height: 100%;
+  width: 100%;
+  background: #fff;
+}
+.cont .form-content{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.form-content .login-form,
+.form-content .signup-form{
+  width: calc(100% / 2 - 25px);
+}
+.forms .form-content .title{
+  position: relative;
+  font-size: 24px;
+  font-weight: 500;
+  color: #333;
+}
+.forms .form-content .title:before{
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 25px;
+  background: #7d2ae8;
+}
+.forms .signup-form  .title:before{
+  width: 20px;
+}
+.forms .form-content .input-boxes{
+  margin-top: 30px;
+}
+.forms .form-content .input-box{
+  display: flex;
+  align-items: center;
+  height: 50px;
+  width: 100%;
+  margin: 10px 0;
+  position: relative;
+}
+.form-content .input-box input{
+  height: 100%;
+  width: 100%;
+  outline: none;
+  border: none;
+  padding: 0 30px;
+  font-size: 16px;
+  font-weight: 500;
+  border-bottom: 2px solid rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+.form-content .input-box input:focus,
+.form-content .input-box input:valid{
+  border-color: #7d2ae8;
+}
+.form-content .input-box i{
+  position: absolute;
+  color: #7d2ae8;
+  font-size: 17px;
+}
+.forms .form-content .text{
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+.forms .form-content .text a{
+  text-decoration: none;
+}
+.forms .form-content .text a:hover{
+  text-decoration: underline;
+}
+.forms .form-content .button{
+  color: #fff;
+  margin-top: 40px;
+}
+.forms .form-content .button input{
+  color: #fff;
+  background: #7d2ae8;
+  border-radius: 6px;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+.forms .form-content .button input:hover{
+  background: #5b13b9;
+}
+.forms .form-content label{
+  color: #5b13b9;
+  cursor: pointer;
+}
+.forms .form-content label:hover{
+  text-decoration: underline;
+}
+.forms .form-content .login-text,
+.forms .form-content .sign-up-text{
+  text-align: center;
+  margin-top: 25px;
+}
+.cont #flip{
+  display: none;
+}
+@media (max-width: 730px) {
+  .cont .cover{
+    display: none;
+  }
+  .form-content .login-form,
+  .form-content .signup-form{
+    width: 100%;
+  }
+  .form-content .signup-form{
+    display: none;
+  }
+  .cont #flip:checked ~ .forms .signup-form{
+    display: block;
+  }
+  .cont #flip:checked ~ .forms .login-form{
+    display: none;
+  }
 }
