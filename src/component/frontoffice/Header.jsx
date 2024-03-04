@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./Header.css";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [isActive, setIsActive] = useState(false);
@@ -73,12 +74,10 @@ const Header = () => {
               <li>
                 <a href="#">Contact</a>
               </li>
-              <a href="#" className="btn">
-                <i className="fa-regular fa-user"></i> Sign up
-              </a>
-              <a href="#" className="btn">
-                <i className="fa-regular fa-user"></i> sign In
-              </a>
+              <Link to="/auth" href="#" className="btn">
+                <i className="fa-regular fa-user"></i> Sign In
+              </Link>
+          
             </ul>
           </nav>
           <div className="bar" onClick={toggleMenu}>
