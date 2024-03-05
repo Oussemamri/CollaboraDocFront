@@ -138,7 +138,7 @@ const SignInSignUp = () => {
           });
       } else {
         try {
-          const { data } = await axios.post(
+          const response = await axios.post(
             "http://localhost:3000/auth/signin",
             {
               email: email,
@@ -147,12 +147,26 @@ const SignInSignUp = () => {
             { withCredentials: true }
           );
 
-          axios.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${data.token}`;
-          setIsLoggedIn(true);
+          console.log("Server Response:", response);
+
+          const { data } = response;
+
+          // Check if the token is present in the response data
+          if (data && data.access_token) {
+            // Store the token in Axios defaults
+            axios.defaults.headers.common[
+              "Authorization"
+            ] = `Bearer ${data.access_token}`;
+
+            // Log the token to see if it's received correctly
+            console.log("Access Token:", data.access_token);
+
+            setIsLoggedIn(true);
+          } else {
+            console.error("Access token not found in server response");
+          }
         } catch (error) {
-          console.log("Login error:", error.message);
+          console.error("Login error:", error.message);
           toastr.error("Incorrect email or password", null, {
             closeButton: true,
             debug: false,
@@ -172,6 +186,7 @@ const SignInSignUp = () => {
             backgroundcolor: "purple",
           });
         }
+
         console.log("c bn ");
       }
     }

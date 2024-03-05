@@ -1,13 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Header.css";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Header = () => {
   const [isActive, setIsActive] = useState(false);
+  const [user, setUser] = useState(null);
 
   const toggleMenu = () => {
     setIsActive(!isActive);
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data } = await axios.get("http://localhost:3000/auth/user");
+        setUser(`${data.firstname} ${data.lastname}`);
+        console.log("User data:", data);
+        console.log(user)
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
+
+  
 
   return (
     <header>
@@ -74,10 +93,13 @@ const Header = () => {
               <li>
                 <a href="#">Contact</a>
               </li>
-              <Link to="/auth" href="#" className="btn">
-                <i className="fa-regular fa-user"></i> Sign In
-              </Link>
-          
+              {user ? (
+                <span>Welcome, {user}</span>
+              ) : (
+                <Link to="/auth" className="btn">
+                  <i className="fa-regular fa-user"></i> Sign In
+                </Link>
+              )}
             </ul>
           </nav>
           <div className="bar" onClick={toggleMenu}>
