@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./Auth.css";
 import axios from "axios";
 import { Navigate } from "react-router-dom";
@@ -6,137 +6,106 @@ import toastr from "toastr";
 import "toastr/build/toastr.min.css";
 
 const SignInSignUp = () => {
-  //SIGNUP LOGIC
-  const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [touchedFields, setTouchedFields] = useState({
-    firstName: false,
-    lastName: false,
-    email: false,
-    password: false,
-    confirmPassword: false,
-  });
-  const [firstNameError, setFirstNameError] = useState("");
-  const [lastNameError, setLastNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [firstNameError, setFirstNameError] = useState("");
+  const [lastNameError, setLastNameError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [touchedFields, setTouchedFields] = useState({});
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Add isLoggedIn state
   const [redirect, setRedirect] = useState(false);
 
-  function navigateTo() {
-    setRedirect(false);
-  }
-
-  const togglePasswordVisibility = (type) => {
-    if (type === "password") {
-      setShowPassword((prevState) => !prevState);
-    } else if (type === "confirmPassword") {
-      setShowConfirmPassword((prevState) => !prevState);
-    }
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState);
   };
 
   const handleFieldBlur = (field) => {
-    setTouchedFields((prevTouchedFields) => ({
-      ...prevTouchedFields,
-      [field]: true,
-    }));
-    validateField(field);
+    setTouchedFields({ ...touchedFields, [field]: true });
+    if (field === "email") {
+      validateEmail();
+    } else if (field === "password") {
+      validatePassword();
+    } else if (field === "firstName") {
+      validateFirstName();
+    } else if (field === "lastName") {
+      validateLastName();
+    } else if (field === "confirmPassword") {
+      validateConfirmPassword();
+    }
   };
 
-  const validateField = (field) => {
-    switch (field) {
-      case "firstName":
-        if (!/^[a-zA-Z]{3,16}$/.test(firstName)) {
-          setFirstNameError(
-            "Firstname should be 3-16 characters and shouldn't include any special characters!"
-          );
-        } else {
-          setFirstNameError("");
-        }
-        break;
-      case "lastName":
-        if (!/^[a-zA-Z]{3,16}$/.test(lastName)) {
-          setLastNameError(
-            "Lastname should be 3-16 characters and shouldn't include any special characters!"
-          );
-        } else {
-          setLastNameError("");
-        }
-        break;
-      case "email":
-        if (!/\S+@\S+\.\S+/.test(email)) {
-          setEmailError("Please enter a valid email address.");
-        } else {
-          setEmailError("");
-        }
-        break;
-      case "password":
-        if (
-          !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$%!*#?&+])[A-Za-z\d@$%!*#?&+]{8,20}$/.test(
-            password
-          )
-        ) {
-          setPasswordError(
-            "Password should be 8-20 characters and include at least 1 letter, 1 number, and 1 special character!"
-          );
-        } else {
-          setPasswordError("");
-        }
-        break;
-      case "confirmPassword":
-        if (password !== confirmPassword) {
-          setConfirmPasswordError("Passwords do not match!");
-        } else {
-          setConfirmPasswordError("");
-        }
-        break;
-      default:
-        break;
+  if (isLoggedIn) {
+    return <Navigate to="/" />;
+  }
+  const validateEmail = () => {
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setEmailError("Please enter a valid email address.");
+    } else {
+      setEmailError("");
+    }
+  };
+
+  const validatePassword = () => {
+    if (!password) {
+      setPasswordError("Password is required.");
+    } else {
+      setPasswordError("");
+    }
+  };
+
+  const validateFirstName = () => {
+    if (!firstName) {
+      setFirstNameError("First name is required.");
+    } else {
+      setFirstNameError("");
+    }
+  };
+
+  const validateLastName = () => {
+    if (!lastName) {
+      setLastNameError("Last name is required.");
+    } else {
+      setLastNameError("");
+    }
+  };
+
+  const validateConfirmPassword = () => {
+    if (!confirmPassword) {
+      setConfirmPasswordError("Confirm password is required.");
+    } else if (confirmPassword !== password) {
+      setConfirmPasswordError("Passwords do not match.");
+    } else {
+      setConfirmPasswordError("");
     }
   };
 
   const validateForm = () => {
-    validateField("firstName");
-    validateField("lastName");
-    validateField("email");
-    validateField("password");
-    validateField("confirmPassword");
+    validateEmail();
+    validatePassword();
+    validateFirstName();
+    validateLastName();
+    validateConfirmPassword();
 
     return (
-      !firstNameError &&
-      !lastNameError &&
       !emailError &&
       !passwordError &&
+      !firstNameError &&
+      !lastNameError &&
       !confirmPasswordError
     );
   };
 
-  const handleSubmit = async (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      if (isSignUp) {
-        axios
-          .post("http://localhost:3000/auth/signup", {
-            firstname: firstName,
-            lastname: lastName,
-            email: email,
-            password: password,
-            confirm_password: confirmPassword,
-          })
-          .then(function (response) {
-            toastr.success("Signup successful");
-          })
-          .catch(function (error) {
-            console.log(error.message);
-          });
-      } else {
+      console.log("test");
+      {
         try {
           const response = await axios.post(
             "http://localhost:3000/auth/signin",
@@ -151,7 +120,6 @@ const SignInSignUp = () => {
 
           const { data } = response;
 
-          // Check if the token is present in the response data
           if (data && data.access_token) {
             // Store the token in Axios defaults
             axios.defaults.headers.common[
@@ -186,25 +154,70 @@ const SignInSignUp = () => {
             backgroundcolor: "purple",
           });
         }
-
-        console.log("c bn ");
       }
     }
   };
-  useEffect(() => {
-    if (!isSignUp && isLoggedIn) {
-      setRedirect(true);
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      try {
+        const response = await axios.post("http://localhost:3000/auth/signup", {
+          firstname: firstName,
+          lastname: lastName,
+          email: email,
+          password: password,
+          confirm_password: confirmPassword,
+        });
+
+        console.log("Server Response:", response);
+        // Display success toast
+        toastr.success("Sign up successful", null, {
+          closeButton: true,
+          debug: false,
+          newestOnTop: true,
+          progressBar: true,
+          positionClass: "toast-top-right",
+          preventDuplicates: false,
+          onclick: null,
+          showDuration: "300",
+          hideDuration: "1000",
+          timeOut: "5000",
+          extendedTimeOut: "1000",
+          showEasing: "swing",
+          hideEasing: "linear",
+          showMethod: "fadeIn",
+          hideMethod: "fadeOut",
+          backgroundcolor: "green",
+        });
+        // Reset input fields
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+      } catch (error) {
+        console.error("Signup error:", error.message);
+        toastr.error("Signup failed", null, {
+          closeButton: true,
+          debug: false,
+          newestOnTop: true,
+          progressBar: true,
+          positionClass: "toast-top-right",
+          preventDuplicates: false,
+          onclick: null,
+          showDuration: "300",
+          hideDuration: "1000",
+          timeOut: "5000",
+          extendedTimeOut: "1000",
+          showEasing: "swing",
+          hideEasing: "linear",
+          showMethod: "fadeIn",
+          hideMethod: "fadeOut",
+          backgroundcolor: "red",
+        });
+      }
     }
-  }, [isSignUp, isLoggedIn]);
-
-  if (redirect) {
-    return <Navigate to="/" />;
-  }
-
-  const handleToggleForm = () => {
-    setIsSignUp((prevIsSignUp) => !prevIsSignUp);
-    setEmail("");
-    setPassword("");
   };
 
   return (
@@ -238,49 +251,94 @@ const SignInSignUp = () => {
         <div className="forms">
           <div className="form-content">
             <div className="login-form">
-              <div className="title">{isSignUp ? "Signup" : "Login"}</div>
-              <form action="#" onSubmit={handleSubmit}>
+              <div className="title">Login</div>
+              <form onSubmit={handleSignIn}>
                 <div className="input-boxes">
-                  {isSignUp && (
-                    <>
-                      <div
-                        className={`input-box ${
-                          touchedFields.firstName && firstNameError
-                            ? "error"
-                            : ""
-                        }`}
-                      >
-                        <i className="fas fa-user"></i>
-                        <input
-                          type="text"
-                          placeholder="Enter your firstname"
-                          value={firstName}
-                          onChange={(e) => setFirstName(e.target.value)}
-                          onBlur={() => handleFieldBlur("firstName")}
-                        />
-                      </div>
-                      {touchedFields.firstName && firstNameError && (
-                        <span className="error-message">{firstNameError}</span>
-                      )}
+                  <div className={`input-box ${emailError ? "error" : ""}`}>
+                    <i className="fas fa-envelope"></i>
+                    <input
+                      type="text"
+                      placeholder="Enter your email"
+                      value={email}
+                      onBlur={() => handleFieldBlur("email")}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+                  {emailError && (
+                    <span className="error-message">{emailError}</span>
+                  )}
 
-                      <div
-                        className={`input-box ${
-                          touchedFields.lastName && lastNameError ? "error" : ""
+                  <div className={`input-box ${passwordError ? "error" : ""}`}>
+                    <i className="fas fa-lock"></i>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter your password"
+                      value={password}
+                      onBlur={() => handleFieldBlur("password")}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <button type="button" onClick={togglePasswordVisibility}>
+                      <i
+                        className={`fas ${
+                          showPassword ? "fa-eye-slash" : "fa-eye"
                         }`}
-                      >
-                        <i className="fas fa-user"></i>
-                        <input
-                          type="text"
-                          placeholder="Enter your lastname"
-                          value={lastName}
-                          onBlur={() => handleFieldBlur("lastName")}
-                          onChange={(e) => setLastName(e.target.value)}
-                        />
-                      </div>
-                      {touchedFields.lastName && lastNameError && (
-                        <span className="error-message">{lastNameError}</span>
-                      )}
-                    </>
+                        style={{ cursor: "pointer", border: "none" }}
+                      ></i>
+                    </button>
+                  </div>
+
+                  {passwordError && (
+                    <span className="error-message">{passwordError}</span>
+                  )}
+
+                  <div className="button input-box">
+                    <input type="submit" value="Submit" />
+                  </div>
+                  <div className="text sign-up-text">
+                    Don't have an account?{" "}
+                    <label htmlFor="flip">Signup now</label>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div className="signup-form">
+              <div className="title">Signup</div>
+              <form onSubmit={handleSignUp}>
+                <div className="input-boxes">
+                  <div
+                    className={`input-box ${
+                      touchedFields.firstName && firstNameError ? "error" : ""
+                    }`}
+                  >
+                    <i className="fas fa-user"></i>
+                    <input
+                      type="text"
+                      placeholder="Enter your firstname"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      onBlur={() => handleFieldBlur("firstName")}
+                    />
+                  </div>
+                  {touchedFields.firstName && firstNameError && (
+                    <span className="error-message">{firstNameError}</span>
+                  )}
+
+                  <div
+                    className={`input-box ${
+                      touchedFields.lastName && lastNameError ? "error" : ""
+                    }`}
+                  >
+                    <i className="fas fa-user"></i>
+                    <input
+                      type="text"
+                      placeholder="Enter your lastname"
+                      value={lastName}
+                      onBlur={() => handleFieldBlur("lastName")}
+                      onChange={(e) => setLastName(e.target.value)}
+                    />
+                  </div>
+                  {touchedFields.lastName && lastNameError && (
+                    <span className="error-message">{lastNameError}</span>
                   )}
 
                   <div
@@ -332,67 +390,47 @@ const SignInSignUp = () => {
                     <span className="error-message">{passwordError}</span>
                   )}
 
-                  {isSignUp && (
-                    <>
-                      <div
-                        className={`input-box ${
-                          touchedFields.confirmPassword && confirmPasswordError
-                            ? "error"
-                            : ""
-                        }`}
-                      >
-                        <i className="fas fa-lock"></i>
-                        <input
-                          type={showConfirmPassword ? "text" : "password"}
-                          placeholder="Confirm your password"
-                          value={confirmPassword}
-                          onBlur={() => handleFieldBlur("confirmPassword")}
-                          onChange={(e) => setConfirmPassword(e.target.value)}
-                        />
-                        <button
-                          type="button"
-                          onClick={() =>
-                            togglePasswordVisibility("confirmPassword")
-                          }
-                        >
-                          <i
-                            className={`fas ${
-                              showConfirmPassword ? "fa-eye-slash" : "fa-eye"
-                            }`}
-                            style={{ cursor: "pointer", border: "none" }}
-                          ></i>
-                        </button>
-                      </div>
-
-                      {touchedFields.confirmPassword &&
-                        confirmPasswordError && (
-                          <span className="error-message">
-                            {confirmPasswordError}
-                          </span>
-                        )}
-                    </>
-                  )}
-                  <div className="button input-box">
+                  <div
+                    className={`input-box ${
+                      touchedFields.confirmPassword && confirmPasswordError
+                        ? "error"
+                        : ""
+                    }`}
+                  >
+                    <i className="fas fa-lock"></i>
                     <input
-                      type="submit"
-                      value={isSignUp ? "Signup" : "Login"}
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Confirm your password"
+                      value={confirmPassword}
+                      onBlur={() => handleFieldBlur("confirmPassword")}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
                     />
-                  </div>
-                  <div className="text sign-up-text">
-                    {isSignUp
-                      ? "Already have an account?"
-                      : "Don't have an account?"}{" "}
                     <button
                       type="button"
-                      onClick={handleToggleForm}
-                      style={{
-                        border: "none",
-                        background: "none",
-                        cursor: "pointer",
-                      }}
+                      onClick={() =>
+                        togglePasswordVisibility("confirmPassword")
+                      }
                     >
-                      {isSignUp ? "Login now" : "Signup now"}
+                      <i
+                        className={`fas ${
+                          showPassword ? "fa-eye-slash" : "fa-eye"
+                        }`}
+                        style={{ cursor: "pointer", border: "none" }}
+                      ></i>
                     </button>
+                  </div>
+
+                  {touchedFields.confirmPassword && confirmPasswordError && (
+                    <span className="error-message">
+                      {confirmPasswordError}
+                    </span>
+                  )}
+                  <div className="button input-box">
+                    <input type="submit" value="Submit" />
+                  </div>
+                  <div className="text sign-up-text">
+                    Already have an account?{" "}
+                    <label htmlFor="flip">Login now</label>
                   </div>
                 </div>
               </form>
