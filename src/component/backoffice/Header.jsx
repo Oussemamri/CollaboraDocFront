@@ -1,237 +1,123 @@
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import Quill from "quill";
+import "quill/dist/quill.snow.css";
+import "./TextEditor.css";
+import ImageResize from "quill-image-resize";
+import { io } from "socket.io-client"
+import { useParams } from "react-router-dom";
+const SAVE_INTERVAL_MS = 2000
 
-function Header() {
-    return (
-        <header id="header" className="header fixed-top d-flex align-items-center">
+const toolbarOptions = [
+  ["bold", "italic", "underline", "strike"], // toggled buttons
+  ["blockquote", "code-block"],
+  [{ header: 1 }, { header: 2 }], // headers
+  [{ list: "ordered" }, { list: "bullet" }], // lists
+  [{ indent: "-1" }, { indent: "+1" }], // indentations
+  [{ color: [] }, { background: [] }], // color options
+  [{ align: [] }], // text alignment
+  ["link", "image", "video"], // link, image, and video insertion
+  [{ font: [] }], // font family
+  [{ size: ["small", false, "large", "huge"] }], // font size
+  ["clean"], // remove formatting button
+];
 
-            <div className="d-flex align-items-center justify-content-between">
-                <a href="index.html" className="logo d-flex align-items-center">
-                    <img src="assets/img/logo.png" alt="" />
-                    <span className="d-none d-lg-block">NiceAdmin</span>
-                </a>
-                <i className="bi bi-list toggle-sidebar-btn" onClick={() => {
-                    document.body.classList.toggle('toggle-sidebar');
-                }}></i>
+const Testdocument = () => {
+  const { id: documentId } = useParams()
+  const [socket, setSocket] = useState()
+  const [quill, setQuill] = useState()
+  console.log(documentId)
 
-            </div>
+  useEffect(() => {
+    const s = io('http://localhost:3000');
+    setSocket(s)
 
-            <div className="search-bar">
-                <form className="search-form d-flex align-items-center" method="POST" action="#">
-                    <input type="text" name="query" placeholder="Search" title="Enter search keyword" />
-                    <button type="submit" title="Search"><i className="bi bi-search"></i></button>
-                </form>
-            </div>
+    s.on('connect', function () {
+      console.log('Connected');
 
-            <nav className="header-nav ms-auto">
-                <ul className="d-flex align-items-center">
+    })
+    return () => {
+      s.disconnect()
+    }
+  }, [])
 
-                    <li className="nav-item d-block d-lg-none">
-                        <a className="nav-link nav-icon search-bar-toggle " href="#">
-                            <i className="bi bi-search"></i>
-                        </a>
-                    </li>
 
-                    <li className="nav-item dropdown">
+  useEffect(() => {
+    if (socket == null || quill == null) return
+    socket.once("load-document", document => {
+      quill.setContents(document)
+      quill.enable()
+    })
+    socket.emit('get-document', documentId)
 
-                        <a className="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-                            <i className="bi bi-bell"></i>
-                            <span className="badge bg-primary badge-number">4</span>
-                        </a>
+  }, [socket, quill, documentId])
 
-                        <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-                            <li className="dropdown-header">
-                                You have 4 new notifications
-                                <a href="#"><span className="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-                            </li>
-                            <li>
-                                <hr className="dropdown-divider" />
-                            </li>
+  useEffect(() => {
+    if (socket == null || quill == null) return;
 
-                            <li className="notification-item">
-                                <i className="bi bi-exclamation-circle text-warning"></i>
-                                <div>
-                                    <h4>Lorem Ipsum</h4>
-                                    <p>Quae dolorem earum veritatis oditseno</p>
-                                    <p>30 min. ago</p>
-                                </div>
-                            </li>
+    const handler = (delta, oldDelta, source) => {
+      if (source !== 'user') return;
+      socket.emit('send-changes', delta);
+    };
 
-                            <li>
-                                <hr className="dropdown-divider" />
-                            </li>
 
-                            <li className="notification-item">
-                                <i className="bi bi-x-circle text-danger"></i>
-                                <div>
-                                    <h4>Atque rerum nesciunt</h4>
-                                    <p>Quae dolorem earum veritatis oditseno</p>
-                                    <p>1 hr. ago</p>
-                                </div>
-                            </li>
+    quill.on('text-change', handler);
 
-                            <li>
-                                <hr className="dropdown-divider" />
-                            </li>
+    return () => {
+      quill.off('text-change', handler);
+    };
+  }, [socket, quill]);
 
-                            <li className="notification-item">
-                                <i className="bi bi-check-circle text-success"></i>
-                                <div>
-                                    <h4>Sit rerum fuga</h4>
-                                    <p>Quae dolorem earum veritatis oditseno</p>
-                                    <p>2 hrs. ago</p>
-                                </div>
-                            </li>
 
-                            <li>
-                                <hr className="dropdown-divider" />
-                            </li>
 
-                            <li className="notification-item">
-                                <i className="bi bi-info-circle text-primary"></i>
-                                <div>
-                                    <h4>Dicta reprehenderit</h4>
-                                    <p>Quae dolorem earum veritatis oditseno</p>
-                                    <p>4 hrs. ago</p>
-                                </div>
-                            </li>
+  useEffect(() => {
+    if (socket == null || quill == null) return;
 
-                            <li>
-                                <hr className="dropdown-divider" />
-                            </li>
-                            <li className="dropdown-footer">
-                                <a href="#">Show all notifications</a>
-                            </li>
+    const handler = (delta, oldDelta, source) => {
+      quill.updateContents(delta)
+    };
 
-                        </ul>
 
-                    </li>
 
-                    <li className="nav-item dropdown">
+    socket.on('receive-changes', handler);
 
-                        <a className="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-                            <i className="bi bi-chat-left-text"></i>
-                            <span className="badge bg-success badge-number">3</span>
-                        </a>
+    return () => {
+      socket.off('receive-changes', handler);
+    };
+  }, [socket, quill]);
 
-                        <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-                            <li className="dropdown-header">
-                                You have 3 new messages
-                                <a href="#"><span className="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-                            </li>
-                            <li>
-                                <hr className="dropdown-divider" />
-                            </li>
 
-                            <li className="message-item">
-                                <a href="#">
-                                    <img src="assets/img/messages-1.jpg" alt="" className="rounded-circle" />
-                                    <div>
-                                        <h4>Maria Hudson</h4>
-                                        <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                                        <p>4 hrs. ago</p>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <hr className="dropdown-divider" />
-                            </li>
+  //AUTO_SAVE
+  useEffect(() => {
+    if (socket == null || quill == null) return
+    const interval = setInterval(() => {
+      socket.emit('save-document', quill.getContents())
+    }, SAVE_INTERVAL_MS)
 
-                            <li className="message-item">
-                                <a href="#">
-                                    <img src="assets/img/messages-2.jpg" alt="" className="rounded-circle" />
-                                    <div>
-                                        <h4>Anna Nelson</h4>
-                                        <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                                        <p>6 hrs. ago</p>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <hr className="dropdown-divider" />
-                            </li>
+    return () => {
+      clearInterval(interval)
+    }
 
-                            <li className="message-item">
-                                <a href="#">
-                                    <img src="assets/img/messages-3.jpg" alt="" className="rounded-circle" />
-                                    <div>
-                                        <h4>David Muldon</h4>
-                                        <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                                        <p>8 hrs. ago</p>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <hr className="dropdown-divider" />
-                            </li>
+  }, [socket, quill])
 
-                            <li className="dropdown-footer">
-                                <a href="#">Show all messages</a>
-                            </li>
 
-                        </ul>
 
-                    </li>
 
-                    <li className="nav-item dropdown pe-3">
+  const wrapperRef = useCallback((wrapper) => {
+    if (wrapper == null) return;
+    Quill.register("modules/imageResize", ImageResize);
 
-                        <a className="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                            <img src="assets/img/profile-img.jpg" alt="Profile" className="rounded-circle" />
-                            <span className="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
-                        </a>
+    wrapper.innerHTML = "";
+    const editor = document.createElement("div");
+    wrapper.append(editor);
+    const q = new Quill(editor, {
+      theme: "snow",
+      modules: { toolbar: toolbarOptions, imageResize: {} },
+    });
+    q.disable()
+    q.setText('loading')
+    setQuill(q)
+  }, []);
+  return <div className="cc container" id="container" ref={wrapperRef}></div>;
+};
 
-                        <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-                            <li className="dropdown-header">
-                                <h6>Kevin Anderson</h6>
-                                <span>Web Designer</span>
-                            </li>
-                            <li>
-                                <hr className="dropdown-divider" />
-                            </li>
-
-                            <li>
-                                <a className="dropdown-item d-flex align-items-center" href="users-profile.html">
-                                    <i className="bi bi-person"></i>
-                                    <span>My Profile</span>
-                                </a>
-                            </li>
-                            <li>
-                                <hr className="dropdown-divider" />
-                            </li>
-
-                            <li>
-                                <a className="dropdown-item d-flex align-items-center" href="users-profile.html">
-                                    <i className="bi bi-gear"></i>
-                                    <span>Account Settings</span>
-                                </a>
-                            </li>
-                            <li>
-                                <hr className="dropdown-divider" />
-                            </li>
-
-                            <li>
-                                <a className="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                                    <i className="bi bi-question-circle"></i>
-                                    <span>Need Help?</span>
-                                </a>
-                            </li>
-                            <li>
-                                <hr className="dropdown-divider" />
-                            </li>
-
-                            <li>
-                                <a className="dropdown-item d-flex align-items-center" href="#">
-                                    <i className="bi bi-box-arrow-right"></i>
-                                    <span>Sign Out</span>
-                                </a>
-                            </li>
-
-                        </ul>
-                    </li>
-
-                </ul>
-            </nav>
-
-        </header>
-    )
-}
-
-export default Header
+export default Testdocument;

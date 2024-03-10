@@ -28,10 +28,14 @@ const Testdocument = () => {
     wrapper.append(editor);
     new Quill(editor, {
       theme: "snow",
-      modules: { toolbar: toolbarOptions, imageResize : {} },
+      modules: { toolbar: toolbarOptions, imageResize: {} },
     });
   }, []);
-  return <div className="cc container" id="container" ref={wrapperRef}></div>;
+  return (
+    <main id="main" className="main">
+      <div className="cc container" id="container" ref={wrapperRef}></div>;
+    </main>
+  );
 };
 
 export default Testdocument;
