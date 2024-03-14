@@ -5,6 +5,8 @@ import "./TextEditor.css";
 import ImageResize from "quill-image-resize";
 import { io } from "socket.io-client"
 import { useParams } from "react-router-dom";
+import Comment from "./comment";
+
 const SAVE_INTERVAL_MS = 2000
 
 const toolbarOptions = [
@@ -117,7 +119,16 @@ const Testdocument = () => {
     q.setText('loading')
     setQuill(q)
   }, []);
-  return <div className="cc container" id="container" ref={wrapperRef}></div>;
+ 
+ 
+ 
+ 
+ return (
+  <>
+ <div className="cc container" id="container" ref={wrapperRef}>  </div>
+<Comment/>
+</>
+);
 };
 
 export default Testdocument;
