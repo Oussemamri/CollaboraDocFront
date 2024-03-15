@@ -9,6 +9,7 @@ import "@fortawesome/fontawesome-free/css/all.css";
 
 import FullFfront from "./component/frontoffice/FullFfront";
 import Testdocument from "./component/frontoffice/Testdocument";
+import TextEditor from "./component/frontoffice/TextEditor";
 import CommentComponent from "./component/frontoffice/comment";
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Route path="/auth" element={<Auth />} />
           <Route path="/aa" element={<Homescreen />} />
           <Route path="/ccc" element={<FullFfront />} />
+
           <Route path="/documents/:id" element={<Testdocument /> } />
         </Routes>
       </BrowserRouter>
