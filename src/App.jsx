@@ -9,11 +9,8 @@ import "@fortawesome/fontawesome-free/css/all.css";
 
 import FullFfront from "./component/frontoffice/FullFfront";
 import Testdocument from "./component/frontoffice/Testdocument";
-<<<<<<< HEAD
 import TextEditor from "./component/frontoffice/TextEditor";
-=======
 import CommentComponent from "./component/frontoffice/comment";
->>>>>>> 1249d2121ccc56397b64880ca99acd6486415cd0
 
 function App() {
   return (
@@ -28,12 +25,8 @@ function App() {
           <Route path="/auth" element={<Auth />} />
           <Route path="/aa" element={<Homescreen />} />
           <Route path="/ccc" element={<FullFfront />} />
-<<<<<<< HEAD
-          <Route path="/test" element={<Testdocument />} />
-          <Route path="/blocsConcept" element={<TextEditor />} />
-=======
+
           <Route path="/documents/:id" element={<Testdocument /> } />
->>>>>>> 1249d2121ccc56397b64880ca99acd6486415cd0
         </Routes>
       </BrowserRouter>
      

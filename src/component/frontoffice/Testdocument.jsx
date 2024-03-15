@@ -4,8 +4,11 @@ import "quill/dist/quill.snow.css";
 import "./TextEditor.css";
 import ImageResize from "quill-image-resize";
 import { io } from "socket.io-client"
-import { useParams } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import Comment from "./comment";
+import Header from "../backoffice/Header";
+import Sidebar from "../backoffice/Sidebar";
+import Footer from "../backoffice/Footer";
 
 const SAVE_INTERVAL_MS = 2000
 
@@ -120,14 +123,17 @@ const Testdocument = () => {
     setQuill(q)
   }, []);
 
- 
- 
- 
- 
+
  return (
   <>
- <div className="cc container" id="container" ref={wrapperRef}>  </div>
+   <Header />
+      <Sidebar />
+      <Outlet />
+      <div id="main"> <div className="cc container" id="container" ref={wrapperRef}>  </div>
+</div>
 <Comment/>
+      <Footer />
+
 </>
 );
 };
