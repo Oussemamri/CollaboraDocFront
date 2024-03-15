@@ -6,6 +6,7 @@ import ImageResize from "quill-image-resize";
 import { io } from "socket.io-client"
 import { useParams } from "react-router-dom";
 import Comment from "./comment";
+import DrawerExample from "./DrawerExample";
 
 const SAVE_INTERVAL_MS = 2000
 
@@ -126,7 +127,7 @@ const Testdocument = () => {
  return (
   <>
  <div className="cc container" id="container" ref={wrapperRef}>  </div>
-<Comment/>
+ <DrawerExample/>
 </>
 );
 };
