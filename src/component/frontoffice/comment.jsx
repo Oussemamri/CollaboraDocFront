@@ -1,16 +1,14 @@
-// comment.jsx
-
 import React, { useEffect, useState, useCallback } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
-import { AiOutlineComment, AiOutlineSend } from 'react-icons/ai';
-import './CommentComponent.css';
-import { FcComments } from "react-icons/fc";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faComment, faReply } from '@fortawesome/free-solid-svg-icons';
+import { AiFillWechat } from "react-icons/ai";
 
+import './CommentComponent.css'; // Import the stylesheet
 
 const CommentComponent = () => {
-
-  const profileImageUrl = `/malak.png`;
+  const profileImageUrl = `/malak.png`; // Relative path to the profile image in the public folder
 
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
@@ -75,7 +73,7 @@ const CommentComponent = () => {
       try {
         const response = await axios.post(`http://localhost:3000/reply/${comment._id}`, {
           contentreply: replyInput,
-          comment: comment,
+          comment: comment
         });
 
         socket.emit('comment', response.data);
@@ -90,7 +88,7 @@ const CommentComponent = () => {
 
   return (
     <div className="comment-sidebar">
-      <div className="comments-container">
+      <div className="comment-container">
         <div className="comment-input">
           <input
             type="text"
@@ -99,32 +97,26 @@ const CommentComponent = () => {
             placeholder="Add a new comment"
           />
           <button className="submit-button" onClick={handleCommentSubmit}>
-            <AiOutlineSend />
+            <FontAwesomeIcon icon={faComment} />
           </button>
         </div>
-        <div>
-          <ul className="comments-list">
+        <div className="comment-list">
+          <ul>
             {comments.map((comment) => (
               <li key={comment._id} className="comment-card">
-                <div className="comment-main-level">
-                  <div className="comment-display">
-                    <div className="comment-avatar">
-                      <img src={profileImageUrl} alt="User Profile" />
-                    </div>
-                    <span className="comment-text">{comment.commentaire}</span>
+                <div>
+                  <div className="profile-image">
+                    <img src={profileImageUrl} alt="User Profile" />
                   </div>
-                  <button
-                    className="reply-button"
-                    onClick={() => {
-                      setReplyCommentId(comment._id);
-                      fetchReplies(comment._id);
-                    }}
-                  >
-                    <AiOutlineComment />
+
+
+                  <span className="comment-text">{comment.commentaire}</span>
+                  <button className="reply-button" onClick={() => {
+                    setReplyCommentId(comment._id);
+                    fetchReplies(comment._id);
+                  }}>
+                    <AiFillWechat />
                   </button>
-                  {comment.replies.length > 0 && (
-                    <span className="reply-indicator">{comment.replies.length} Réponses</span>
-                  )}
                 </div>
                 {replyCommentId === comment._id && (
                   <div className="reply-input">
@@ -135,12 +127,14 @@ const CommentComponent = () => {
                       placeholder="Your reply..."
                     />
                     <button className="submit-button" onClick={() => handleReplyClick(comment)}>
-                      <AiOutlineSend />
+                      <FontAwesomeIcon icon={faReply} />
                     </button>
                     {replies[comment._id] && (
-                      <ul className="reply-list">
+                      <ul>
                         {replies[comment._id].map((reply) => (
-                          <li key={reply._id}>{reply.contentreply}</li>
+                          <li key={reply._id}>
+                            {reply.contentreply}
+                          </li>
                         ))}
                       </ul>
                     )}
