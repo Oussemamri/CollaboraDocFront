@@ -8,14 +8,14 @@ import { AiFillWechat } from "react-icons/ai";
 import './CommentComponent.css'; // Import the stylesheet
 
 const CommentComponent = () => {
-   const profileImageUrl = `/malak.png`; // Chemin relatif vers l'image de profil dans le dossier public
+  const profileImageUrl = `/malak.png`; // Relative path to the profile image in the public folder
 
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [replyInput, setReplyInput] = useState('');
   const [replyCommentId, setReplyCommentId] = useState(null);
   const [replies, setReplies] = useState({}); // State to store replies for each comment
-  const socket = io('http://localhost:3000');
+  const socket = io('http://localhost:3002');
 
   useEffect(() => {
     const fetchComments = async () => {
