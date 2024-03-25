@@ -1,21 +1,23 @@
+// comment.jsx
+
 import React, { useEffect, useState, useCallback } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComment, faReply } from '@fortawesome/free-solid-svg-icons';
-import { AiFillWechat } from "react-icons/ai";
+import { AiOutlineComment, AiOutlineSend } from 'react-icons/ai';
+import './CommentComponent.css';
+import { FcComments } from "react-icons/fc";
 
-import './CommentComponent.css'; // Import the stylesheet
 
 const CommentComponent = () => {
-   const profileImageUrl = `/malak.png`; // Chemin relatif vers l'image de profil dans le dossier public
+
+  const profileImageUrl = `/malak.png`;
 
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [replyInput, setReplyInput] = useState('');
   const [replyCommentId, setReplyCommentId] = useState(null);
   const [replies, setReplies] = useState({}); // State to store replies for each comment
-  const socket = io('http://localhost:3000');
+  const socket = io('http://localhost:3002');
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -73,7 +75,7 @@ const CommentComponent = () => {
       try {
         const response = await axios.post(`http://localhost:3000/reply/${comment._id}`, {
           contentreply: replyInput,
-          comment: comment
+          comment: comment,
         });
 
         socket.emit('comment', response.data);
@@ -88,7 +90,7 @@ const CommentComponent = () => {
 
   return (
     <div className="comment-sidebar">
-      <div className="comment-container">
+      <div className="comments-container">
         <div className="comment-input">
           <input
             type="text"
@@ -97,26 +99,32 @@ const CommentComponent = () => {
             placeholder="Add a new comment"
           />
           <button className="submit-button" onClick={handleCommentSubmit}>
-            <FontAwesomeIcon icon={faComment} />
+            <AiOutlineSend />
           </button>
         </div>
-        <div className="comment-list">
-          <ul>
+        <div>
+          <ul className="comments-list">
             {comments.map((comment) => (
               <li key={comment._id} className="comment-card">
-                <div>
-                  <div className="profile-image">
-                    <img src={profileImageUrl} alt="User Profile" />
+                <div className="comment-main-level">
+                  <div className="comment-display">
+                    <div className="comment-avatar">
+                      <img src={profileImageUrl} alt="User Profile" />
+                    </div>
+                    <span className="comment-text">{comment.commentaire}</span>
                   </div>
-
-
-                  <span className="comment-text">{comment.commentaire}</span>
-                  <button className="reply-button" onClick={() => {
-                    setReplyCommentId(comment._id);
-                    fetchReplies(comment._id);
-                  }}>
-                    <AiFillWechat />
+                  <button
+                    className="reply-button"
+                    onClick={() => {
+                      setReplyCommentId(comment._id);
+                      fetchReplies(comment._id);
+                    }}
+                  >
+                    <AiOutlineComment />
                   </button>
+                  {comment.replies.length > 0 && (
+                    <span className="reply-indicator">{comment.replies.length} Réponses</span>
+                  )}
                 </div>
                 {replyCommentId === comment._id && (
                   <div className="reply-input">
@@ -127,14 +135,12 @@ const CommentComponent = () => {
                       placeholder="Your reply..."
                     />
                     <button className="submit-button" onClick={() => handleReplyClick(comment)}>
-                      <FontAwesomeIcon icon={faReply} />
+                      <AiOutlineSend />
                     </button>
                     {replies[comment._id] && (
-                      <ul>
+                      <ul className="reply-list">
                         {replies[comment._id].map((reply) => (
-                          <li key={reply._id}>
-                            {reply.contentreply}
-                          </li>
+                          <li key={reply._id}>{reply.contentreply}</li>
                         ))}
                       </ul>
                     )}

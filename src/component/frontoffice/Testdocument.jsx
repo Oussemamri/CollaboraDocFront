@@ -6,6 +6,7 @@ import ImageResize from "quill-image-resize";
 import { io } from "socket.io-client"
 import { Outlet, useParams } from "react-router-dom";
 import Comment from "./comment";
+import DrawerExample from "./DrawerExample";
 import Header from "../backoffice/Header";
 import Sidebar from "../backoffice/Sidebar";
 import Footer from "../backoffice/Footer";
@@ -126,6 +127,8 @@ const Testdocument = () => {
 
  return (
   <>
+ <div className="cc container" id="container" ref={wrapperRef}>  </div>
+ <DrawerExample/>
    <Header />
       <Sidebar />
       <Outlet />
