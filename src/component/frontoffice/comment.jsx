@@ -9,14 +9,15 @@ import { FcComments } from "react-icons/fc";
 
 
 const CommentComponent = () => {
+
   const profileImageUrl = `/malak.png`;
 
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [replyInput, setReplyInput] = useState('');
   const [replyCommentId, setReplyCommentId] = useState(null);
-  const [replies, setReplies] = useState({});
-  const socket = io('http://localhost:3000');
+  const [replies, setReplies] = useState({}); // State to store replies for each comment
+  const socket = io('http://localhost:3002');
 
   useEffect(() => {
     const fetchComments = async () => {
