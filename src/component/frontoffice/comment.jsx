@@ -15,23 +15,28 @@ const CommentComponent = () => {
   const [replyInput, setReplyInput] = useState('');
   const [replyCommentId, setReplyCommentId] = useState(null);
   const [replies, setReplies] = useState({}); // State to store replies for each comment
-  const socket = io('http://localhost:3002');
+  const socket = io('http://localhost:3000');
+
+  const fetchComments = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/comment');
+      setComments(response.data);
+    } catch (error) {
+      console.error('Error fetching comments:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchComments = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/comment');
-        setComments(response.data);
-      } catch (error) {
-        console.error('Error fetching comments:', error);
-      }
-    };
+    
 
     fetchComments();
 
     socket.on('newComment', (comment) => {
       setComments((prevComments) => [...prevComments, comment]);
     });
+    socket.on('newReply', (reply,commentid) => {
+      console.log(commentid[1])
+      fetchReplies(commentid[1])   });
 
     socket.on('connect_error', (error) => {
       console.error('WebSocket connection error:', error);
@@ -40,7 +45,7 @@ const CommentComponent = () => {
     return () => {
       socket.disconnect();
     };
-  }, [socket]);
+  }, []);
 
   const fetchReplies = async (commentId) => {
     try {
@@ -51,7 +56,7 @@ const CommentComponent = () => {
     }
   };
 
-  const handleCommentSubmit = useCallback(async () => {
+  const handleCommentSubmit = async () => {
     try {
       const response = await axios.post('http://localhost:3000/comment', {
         commentaire: newComment,
@@ -62,30 +67,26 @@ const CommentComponent = () => {
     } catch (error) {
       console.error('Error submitting comment:', error);
     }
-  }, [socket, newComment]);
+  };
 
-  const handleInputChange = useCallback((e) => {
+  const handleInputChange = (e) => {
     setNewComment(e.target.value);
-  }, []);
+  };
 
-  const handleReplyClick = useCallback(
-    async (comment) => {
-      try {
-        const response = await axios.post(`http://localhost:3000/reply/${comment._id}`, {
-          contentreply: replyInput,
-          comment: comment
-        });
+  const handleReplyClick = async (comment) => {
+    try {
+      const response = await axios.post(`http://localhost:3000/reply/${comment._id}`, {
+        contentreply: replyInput,
+      });
 
-        socket.emit('comment', response.data);
-        setReplyInput('');
-        setReplyCommentId(null);
-      } catch (error) {
-        console.error('Error adding reply:', error);
-      }
-    },
-    [socket, replyInput]
-  );
-
+      socket.emit('reply', response.data,comment._id);
+      setReplyInput('');
+      setReplyCommentId(null);
+    } catch (error) {
+      console.error('Error adding reply:', error);
+    }
+  };
+console.log(replies)
   return (
     <div className="comment-sidebar">
       <div className="comment-container">
@@ -108,8 +109,6 @@ const CommentComponent = () => {
                   <div className="profile-image">
                     <img src={profileImageUrl} alt="User Profile" />
                   </div>
-
-
                   <span className="comment-text">{comment.commentaire}</span>
                   <button className="reply-button" onClick={() => {
                     setReplyCommentId(comment._id);
