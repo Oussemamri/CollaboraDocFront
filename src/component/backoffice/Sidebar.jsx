@@ -16,7 +16,7 @@ function Sidebar() {
             data-bs-toggle="collapse"
             href="#"
           >
-            <i class="bi bi-folder"></i> <span>Folder 1</span>
+            <i className="bi bi-folder"></i> <span>Folder 1</span>
             <i className="bi bi-chevron-down ms-auto"></i>
           </a>
           <ul
@@ -26,12 +26,12 @@ function Sidebar() {
           >
             <li>
               <a href="tables-general.html">
-                <i class="bi bi-file-earmark-text"></i> <span>Document 1</span>
+                <i className="bi bi-file-earmark-text"></i> <span>Document 1</span>
               </a>
             </li>
             <li>
               <a href="tables-data.html">
-                <i class="bi bi-file-earmark-text"></i> <span>Document 2</span>
+                <i className="bi bi-file-earmark-text"></i> <span>Document 2</span>
               </a>
             </li>
           </ul>
@@ -43,7 +43,7 @@ function Sidebar() {
             data-bs-toggle="collapse"
             href="#"
           >
-            <i class="bi bi-folder"></i> <span>FOLDER 2</span>
+            <i className="bi bi-folder"></i> <span>FOLDER 2</span>
             <i className="bi bi-chevron-down ms-auto"></i>
           </a>
           <ul
@@ -53,12 +53,12 @@ function Sidebar() {
           >
             <li>
               <a href="tables-general.html">
-                <i class="bi bi-file-earmark-text"></i> <span>Document 1</span>
+                <i className="bi bi-file-earmark-text"></i> <span>Document 1</span>
               </a>
             </li>
             <li>
               <a href="tables-data.html">
-                <i class="bi bi-file-earmark-text"></i> <span>Document 2</span>
+                <i className="bi bi-file-earmark-text"></i> <span>Document 2</span>
               </a>
             </li>
           </ul>
@@ -70,7 +70,7 @@ function Sidebar() {
             data-bs-toggle="collapse"
             href="#"
           >
-            <i class="bi bi-folder"></i> <span>folder 3</span>
+            <i className="bi bi-folder"></i> <span>folder 3</span>
             <i className="bi bi-chevron-down ms-auto"></i>
           </a>
           <ul
@@ -80,12 +80,12 @@ function Sidebar() {
           >
             <li>
               <a href="tables-general.html">
-                <i class="bi bi-file-earmark-text"></i> <span>Document 1 </span>
+                <i className="bi bi-file-earmark-text"></i> <span>Document 1 </span>
               </a>
             </li>
             <li>
               <a href="tables-data.html">
-                <i class="bi bi-file-earmark-text"></i> <span>Document 2</span>
+                <i className="bi bi-file-earmark-text"></i> <span>Document 2</span>
               </a>
             </li>
           </ul>
