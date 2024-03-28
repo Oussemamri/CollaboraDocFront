@@ -16,8 +16,8 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Routes>
-          {/* <Route path="/" element={<FullFfront />} /> */}
+        <Routes> 
+          <Route path="/" element={<FullFfront />} />
           <Route path="/">
             <Route path="/" element={<Navigate to={`/documents/${uuidV4()}`} />} />
           </Route>
@@ -25,9 +25,8 @@ function App() {
           <Route path="/auth" element={<Auth />} />
           <Route path="/aa" element={<Homescreen />} />
           <Route path="/ccc" element={<FullFfront />} />
-
           <Route path="/documents/:id" element={<Testdocument /> } />
-        </Routes>
+         </Routes>
       </BrowserRouter>
      
 
