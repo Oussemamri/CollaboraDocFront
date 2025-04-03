@@ -1,6 +1,6 @@
 # COLLABORAFRONT - Collaboration Platform Frontend
 
-![COLLABORADOCS Banner](assets/img/readme-img)
+![COLLABORADOCS Banner](public/assets/img/readme-img)
 
 ## Overview
 COLLABORAFRONT is a React-based frontend application for a collaboration platform. It's built with React and bundled using Vite, providing a modern development environment with features like Hot Module Replacement (HMR).
